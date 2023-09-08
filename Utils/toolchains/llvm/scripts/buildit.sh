@@ -22,7 +22,7 @@ println "llvm/scripts/buildit.sh" "downloading" echo "Downloading tarball"
     downloads                                                                                             \
     $LLVM_NAME.tar.xz
 println "llvm/scripts/buildit.sh" "extrating" echo "Extracting tarball"
-  pushd_quiet "$UTILS_PATH/toolchain/llvm/downloads"
+  pushd_quiet "$UTILS_PATH/toolchains/llvm/downloads"
     println "llvm/scripts/buildit.sh" "extracting" tar -xvJf llvm-project-16.0.6.src.tar.xz
   popd_quiet
 println "llvm/scripts/buildit.sh" "Confguring" echo "Configuring LLVM"
@@ -32,9 +32,24 @@ println "llvm/scripts/buildit.sh" "Confguring" echo "Configuring LLVM"
   mkdir -p "$UTILS_PATH/toolchains/llvm/artifacts"
 
   pushd_quiet "$UTILS_PATH/toolchains/llvm/artifacts"
-    println "llvm/scripts/buildit.sh" "Configuring" cmake "$UTILS_PATH/toolchains/llvm/downloads/$LLVM_NAME"           \
+    println "llvm/scripts/buildit.sh" "Configuring" cmake "$UTILS_PATH/toolchains/llvm/downloads/$LLVM_NAME/llvm"      \
       -G Ninja                                                                                                         \
       -DCMAKE_INSTALL_PREFIX="$PREFIX"                                                                                 \
-      -DCMAKE_SYSROOT="$ARTIFACTS_PATH/llvm"                                                                           \
       -C "$UTILS_PATH/toolchains/llvm/config/llvm.cmake"
   popd_quiet
+println "llvm/scripts/buildit.sh" "Building" echo "Building LLVM"
+  pushd_quiet "$UTILS_PATH/toolchains/llvm/artifacts"
+    CORE_COUNT=$(get_core_count)
+    if [ $CORE_COUNT -eq 1 ]; then
+      MK_JOBS=1
+    else
+      MK_JOBS=$(($CORE_COUNT-2))
+    fi
+
+    println_ninja "llvm/scripts/buildit.sh" "Building" ninja -j "$MK_JOBS"
+  popd_quiet
+println "llvm/scripts/buildit.sh" "Installing" echo "Installing LLVM"
+  pushd_quiet "$UTILS_PATH/toolchains/llvm/artifacts"
+    println_ninja "llvm/scripts/buildit.sh" "Installing" ninja install/strip
+  popd_quiet
+println "llvm/scripts/buildit.sh" "Finalize" echo "LLVM Installed, Exiting..."

@@ -53,7 +53,17 @@ if [ "$COMMAND" = "toolchain" ]; then
   elif [ "$SUBCOMMAND" == "clean" ]; then
 
     if [ "$TOOLCHAIN" == "llvm" ]; then
-      println "arcane.sh" "toolchain" echo "clean/llvm"
+      pushd_quiet "$UTILS_PATH/toolchains/llvm"
+
+        if [ $? -ne 0 ]; then
+          println "arcane.sh" "toolchain" echo "error pushd failed, is utils corrupted?"
+          exit 1
+        fi
+
+        println "arcane.sh" "toolchain" echo "calling cleanit..."
+        ./scripts/cleanit.sh
+
+      popd_quiet
     else
       usage
     fi

@@ -1,3 +1,4 @@
-Artifacts/
+Artifacts/*
 Utils/toolchains/llvm/downloads
 Utils/toolchains/llvm/artifacts
+Utils/toolchains/llvm/local

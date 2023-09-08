@@ -51,7 +51,7 @@ println_ninja() {
   FILE=$1
   NAME=$2
   shift 2
-  env NINJA_STATUS=$'\e[34m[ '"${FILE} \| ${NAME}"$' ]\e[39m [%f/%t] ' "$@"
+  env NINJA_STATUS=$'\e[34m[ '"${FILE} | ${NAME}"$' ]\e[39m [%f/%t] ' "$@"
 }
 
 # dependency check, run a command with a message checking for a dependency.
@@ -107,4 +107,19 @@ download() {
         echo "Skipped llvm download"
       fi
   popd_quiet
+}
+
+get_core_count() {
+  number_of_processing_units=""
+  SYSTEM_NAME="$(uname -s)"
+
+  if [ "$SYSTEM_NAME" == "Linux" ]; then
+    number_of_processing_units=$(nproc)
+  elif [ "$SYSTEM_NAME" == "FreeBSD" ]; then
+    number_of_processing_units=$(sysctl -n hw.ncpu)
+  elif [ "$SYSTEM_NAME" == "Darwin" ]; then
+    number_of_processing_units=$(sysctl -n hw.ncpu)
+  fi
+
+  echo $number_of_processing_units
 }
