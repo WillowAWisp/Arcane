@@ -6,4 +6,14 @@
 
 #include <types/ctypes.h>
 
-extern "C" u64 read_csr(u64);
+#define read_csr(register) (                                                   \
+  u64 _temp;                                                                   \
+  asm volatile("csrr %0, " #register : "=r"(_temp) );                          \
+  _temp;                                                                       \
+)
+
+#define write_csr(register, value)                                             \
+  asm volatile("csrw " #register ", %0" :: "rK"(value));
+
+
+
