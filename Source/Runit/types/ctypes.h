@@ -17,6 +17,8 @@ namespace Runit {
 
   using FlatPtr = unsigned long*;
   using FlatAddress = unsigned long;
+
+  using NULLPTR_T = decltype(nullptr);
 }
 
 using Runit::u64;
@@ -31,3 +33,5 @@ using Runit::i8;
 
 using Runit::FlatPtr;
 using Runit::FlatAddress;
+
+using Runit::NULLPTR_T;
