@@ -6,4 +6,4 @@
 
 #include <types/ctypes.h>
 
-extern "C" u8 csr_read(FlatAddress addr);
+extern "C" u64 read_csr(u64);

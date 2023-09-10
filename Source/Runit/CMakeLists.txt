@@ -27,6 +27,7 @@ if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "riscv64")
     platform/riscv64/prelude/initialize.cc
 
     platform/riscv64/hal/sbi.asm
+    platform/riscv64/hal/csr.asm
 
     platform/riscv64/impl/print_line.cc
     platform/riscv64/impl/verify.cc
