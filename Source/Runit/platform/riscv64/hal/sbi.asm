@@ -12,8 +12,6 @@
 .equ SBI_REMOTE_SFENCE_VMA_ASID_EID, 0x07
 .equ SBI_SHUTDOWN_EID, 0x08
 
-// Legacy extensions
-
 .global sbi_set_timer
 sbi_set_timer:
   li a7, SBI_SET_TIMER_EID
@@ -58,7 +56,7 @@ sbi_remote_sfence_vma:
 
 .global sbi_remote_sfence_vma_asid
 sbi_remote_sfence_vma_asid:
-  li a7, SBI_REMOTE_SFENCE_VMA_ASID_EID
+  li a7, SBI_REMOTE_SFENCE_VMA_EID
   ecall
   ret
 

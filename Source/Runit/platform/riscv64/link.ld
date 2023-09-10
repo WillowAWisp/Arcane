@@ -1,11 +1,13 @@
 ENTRY(_prelude)
 
 MEMORY {
-  ram (rwx): ORIGIN = 0x80200000, LENGTH = 0x2FFF000
+  ram (rwx): ORIGIN = 0x80200000, LENGTH = 0x2fff000
 }
 
 SECTIONS {
   .text : ALIGN(8) {
+    *(.text.prelude);
+
     *(.text);
     *(.text.*);
   } > ram
@@ -15,13 +17,9 @@ SECTIONS {
     *(.data.*);
   } > ram
 
-  .rodata : ALIGN(8) {
-    *(.rodata);
-    *(.rodata.*);
-  } > ram
-
-  .bss : ALIGN(8) {
-    *(.bss);
-    *(.bss.*);
+  .stack : ALIGN(8) {
+    _stk_btm = .;
+    . += 1024;
+    _stk_top = .;
   } > ram
 }
