@@ -1,8 +1,4 @@
-//
-// Created by Willow Bracker on 9/8/23.
-//
-
-extern "C" void sbi_console_putchar(int character);
+#include "libsbi.h"
 
 void print_line(const char* message) {
   for (const char* character = message; *character; character++) {
@@ -12,5 +8,5 @@ void print_line(const char* message) {
 }
 
 extern "C" void runit_prelude() {
-  print_line("hello world!");
+
 }
